@@ -11,9 +11,7 @@ dotenv.config();
 
 const PORT = process.env.PORT || 4040; // we use || to provide a default value
 console.log("mongodb", process.env.MONGODB);
-mongoose.connect(
-  "mongodb+srv://mattthomassavvy:F0rdtruck@cluster0.14kfgh8.mongodb.net/?retryWrites=true&w=majority"
-);
+mongoose.connect(process.env.MONGODB);
 
 //check out mongoosejs.com for documentation
 const db = mongoose.connection;
