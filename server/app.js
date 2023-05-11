@@ -1,12 +1,28 @@
 // 'Import' the Express module instead of http
 const express = require("express");
+const dotenv = require("dotenv");
+const mongoose = require("mongoose");
+const pizzas = require("./routers/pizzas");
+
 // Initialize the Express application
 const app = express();
-const dotenv = require("dotenv");
 
 dotenv.config();
 
 const PORT = process.env.PORT || 4040; // we use || to provide a default value
+console.log("mongodb", process.env.MONGODB);
+mongoose.connect(
+  "mongodb+srv://mattthomassavvy:F0rdtruck@cluster0.14kfgh8.mongodb.net/?retryWrites=true&w=majority"
+);
+
+//check out mongoosejs.com for documentation
+const db = mongoose.connection;
+
+db.on("error", console.error.bind(console, "Connection Error:"));
+db.once(
+  "open",
+  console.log.bind(console, "Successfully opened connection to Mongo!")
+);
 
 //logging middleware
 const logging = (request, response, next) => {
@@ -66,6 +82,10 @@ app.post("/add", (request, response) => {
   response.json(responseBody);
 });
 
+app.use("/pizzas", pizzas);
+
 // Tell the Express app to start listening
 // Let the humans know I am running and listening on 4040
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+
+// mongodb+srv://eat-a-p3ach:l1f3guard@cluster0.tanxvsy.mongodb.net/?retryWrites=true&w=majority
